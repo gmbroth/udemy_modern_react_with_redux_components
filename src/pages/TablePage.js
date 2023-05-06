@@ -11,9 +11,30 @@ const TablePage = () => {
         { name: 'Lime',   color: 'bg-green-500', score: 4 },
     ];
 
+    const config = [
+        {
+            label: 'Name', 
+            render: (fruit) => fruit.name,
+        },
+        {
+            label: 'Color', 
+            render: (fruit) => <div className={`p-3 m-2 ${fruit.color}`}></div>,
+        },
+        {
+            label: 'Score', 
+            render: (fruit) => fruit.score,
+            header: () => <th className="bg-red-500">Score</th>,
+            sort: (a, b) => {  },
+        },
+    ];
+
+    const keyFor = (row) => {
+        return row.name;
+    };
+
     return (
         <div>
-            <Table data={data} />
+            <Table data={data} config={config} keyFor={keyFor} />
         </div>
     );
 }

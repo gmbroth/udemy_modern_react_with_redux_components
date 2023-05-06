@@ -1,15 +1,28 @@
 
 import { useEffect } from "react";
+import { Fragment } from "react";
 
-const Table = ({ data }) => {
-   
+const Table = ({ data, config, keyFor }) => {
+ 
+    const renderedHeaders = config.map((column) => {
+        return (
+            column.header ? 
+                <Fragment key={column.label}>{column.header()}</Fragment> :
+                <th key={column.label}>{column.label}</th>
+        );
+    });
+  
     const renderedRows = data.map((row) => {
         return (
-            <tr  className='border-b' key={row.name}>
-                <td className='p-3'>{row.name}</td>
-                <td className='p-3'>{row.color}</td>
-                <td className='p-3'>{row.score}</td>
-            </tr>
+            <tr className='border-b' key={keyFor(row)}>
+                {
+                    config.map((column) => {
+                        return (
+                             <td key={column.label} className='p-3'>{column.render(row)}</td>
+                        );
+                    })
+                }
+             </tr>
         );
     });
 
@@ -17,10 +30,8 @@ const Table = ({ data }) => {
         <div>
             <table className="table-auto border-spacing-2">
                 <thead>
-                    <tr>
-                        <th>Fruits</th>
-                        <th>Color</th>
-                        <th>Score</th>
+                    <tr className="border-b-2">
+                        { renderedHeaders }
                     </tr>
                 </thead>
                 <tbody>
